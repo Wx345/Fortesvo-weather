@@ -229,7 +229,10 @@ module.exports = {
      * When httpStaticRoot is set differently to httpAdminRoot, there is no need
      * to move httpAdminRoot
      */
-    httpStatic: '/Users/wenxuan/.node-red/public', //single static source
+   // httpStatic: '/Users/wenxuan/.node-red/public', //single static source
+    const path = require("path");
+
+    httpStatic: path.join(__dirname, "public"),
     /**
      *  OR multiple static sources can be created using an array of objects...
      *  Each object can also contain an options object for further configuration.
