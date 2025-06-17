@@ -1,0 +1,369 @@
+[
+    {
+        "id": "6bbe826837336417",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1a1b1c1d1e1f1g1h",
+        "type": "tab",
+        "label": "Weather Display",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "f84fec57215ae9ad",
+        "type": "inject",
+        "z": "6bbe826837336417",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 200,
+        "wires": [
+            [
+                "e2c865d8d1053a70"
+            ]
+        ]
+    },
+    {
+        "id": "e2c865d8d1053a70",
+        "type": "http request",
+        "z": "6bbe826837336417",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Kuala%20Lumpur&appid=c59897bd1443dbeea7b2d158349becf5&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 290,
+        "y": 200,
+        "wires": [
+            [
+                "95812225809a61f6",
+                "0f6db07e571e1c19"
+            ]
+        ]
+    },
+    {
+        "id": "95812225809a61f6",
+        "type": "json",
+        "z": "6bbe826837336417",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 450,
+        "y": 200,
+        "wires": [
+            [
+                "8a2abb3091b66870"
+            ]
+        ]
+    },
+    {
+        "id": "8a2abb3091b66870",
+        "type": "function",
+        "z": "6bbe826837336417",
+        "name": "function 1",
+        "func": "let data = msg.payload;\n\nlet city = data.name;\nlet temp = data.main.temp;\nlet humidity = data.main.humidity;\nlet weather = data.weather[0].description;\n\nmsg.payload = {\n    city: city,\n    temperature: temp,\n    humidity: humidity,\n    condition: weather\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 200,
+        "wires": [
+            [
+                "94d1b15193fd3b69"
+            ]
+        ]
+    },
+    {
+        "id": "94d1b15193fd3b69",
+        "type": "debug",
+        "z": "6bbe826837336417",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "93ce37b41d4ce8f7",
+        "type": "http response",
+        "z": "6bbe826837336417",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 710,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "0f6db07e571e1c19",
+        "type": "function",
+        "z": "6bbe826837336417",
+        "name": "function 2",
+        "func": "let weather = flow.get(\"weatherData\") || \"No data yet\";\nmsg.payload = `\n  <html>\n    <head><title>Weather</title></head>\n    <body>\n      <h1>Current Weather</h1>\n      <p>${weather}</p>\n    </body>\n  </html>\n`;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 320,
+        "wires": [
+            [
+                "93ce37b41d4ce8f7"
+            ]
+        ]
+    },
+    {
+        "id": "timestamp",
+        "type": "inject",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Fetch every 5 min",
+        "props": [],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "http_request"
+            ]
+        ]
+    },
+    {
+        "id": "http_request",
+        "type": "http request",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Get Weather",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Kuala%20Lumpur&appid=c59897bd1443dbeea7b2d158349becf5&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 330,
+        "y": 220,
+        "wires": [
+            [
+                "json"
+            ]
+        ]
+    },
+    {
+        "id": "json",
+        "type": "json",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 490,
+        "y": 220,
+        "wires": [
+            [
+                "store_weather",
+                "debug"
+            ]
+        ]
+    },
+    {
+        "id": "store_weather",
+        "type": "function",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Store Weather",
+        "func": "flow.set(\"latestWeather\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "debug",
+        "type": "debug",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Show Weather",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "http_in",
+        "type": "http in",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Serve HTML",
+        "url": "/weather",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 290,
+        "y": 420,
+        "wires": [
+            [
+                "build_html"
+            ]
+        ]
+    },
+    {
+        "id": "build_html",
+        "type": "function",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Build HTML Page",
+        "func": "msg.payload = `\n<html>\n  <head>\n    <title>Weather at Your Location</title>\n    <meta http-equiv=\"refresh\" content=\"30\">\n    <style>\n      body { font-family: sans-serif; background: #f0f0f0; margin: 0px; }\n      .box {\n        background: white;\n        padding: 20px;\n        border-radius: 10px;\n        width: 320px;\n        margin: 40px;\n        text-align: center;\n        box-shadow: 0 0 10px rgba(0,0,0,0.1);\n      }\n      header {\n        background: #536872;\n        height: 70px;\n      }\n      header h2 {\n        padding-top: 20px;\n        color: white;\n        padding-left: 40px;\n        margin: 0;\n      }\n      table {\n        table-layout: auto;\n        border-collapse: collapse;\n        }\n      td {\n        vertical-align: top;\n        width: 1px;\n      }\n      img { width: 100px; height: 100px; }\n    </style>\n  </head>\n  <body>\n    <header>\n      <h2>DASHBOARD</h2>\n    </header>\n    <table>\n      <tr>\n        <td>\n          <div class=\"box\">\n            <h2>Current Weather</h2>\n            <p id=\"status\">Getting your location...</p>\n            <div id=\"weather1\"></div>\n          </div>\n        </td>\n        <td>\n          <div class=\"box\">\n          <table style=\"width: 80%;\">\n          <tr>\n            <td rowspan=\"2\" style=\"padding-right: -10px; height: 100px;\">\n            <img src=\"/thermometer.png\" alt=\"Thermometer Icon\" width=\"40\">\n            </td>\n            <td>\n            <h2 style=\"margin-bottom: 0px\">Temperature</h2>\n            </td>\n          </tr>\n\n          <tr>\n            <td>\n            <div style=\"width: 100%;\" id=\"weather2\"></div>\n            </td>\n          </tr>\n            </table>\n          </div>\n        </td>\n      </tr>\n    </table>\n\n    <script>\n      function fetchWeather(lat, lon) {\n        fetch(\\`/getWeatherByCoords?lat=\\${lat}&lon=\\${lon}\\`)\n          .then(res => res.json())\n          .then(data => {\n            if (data && data.main) {\n              const iconUrl = \\`https://openweathermap.org/img/wn/\\${data.weather[0].icon}@2x.png\\`;\n\n              // Full details for box 1\n              const html1 = \\`\n                <p><strong>Location:</strong> \\${data.name}</p>\n                <img src=\"\\${iconUrl}\" alt=\"Weather Icon\" />\n                <p><strong>Temperature:</strong> \\${data.main.temp} °C</p>\n                <p><strong>Humidity:</strong> \\${data.main.humidity}%</p>\n                <p><strong>Description:</strong> \\${data.weather[0].description}</p>\n              \\`;\n\n              // Temperature only for box 2\n              const html2 = \\`\n                <p style=\"font-size: 35px;\"><strong>\\${data.main.temp} °C</strong></p>\n              \\`;\n\n              document.getElementById(\"weather1\").innerHTML = html1;\n              document.getElementById(\"weather2\").innerHTML = html2;\n\n              const now = new Date();\n              const timeString = now.toLocaleString(); \n              document.getElementById(\"status\").innerText = \"Last updated: \" + timeString;\n            } else {\n              document.getElementById(\"status\").innerText = \"Weather data unavailable.\";\n            }\n          })\n          .catch(() => {\n            document.getElementById(\"status\").innerText = \"Failed to fetch weather.\";\n          });\n      }\n\n      if (navigator.geolocation) {\n        navigator.geolocation.getCurrentPosition(\n          pos => fetchWeather(pos.coords.latitude, pos.coords.longitude),\n          err => document.getElementById(\"status\").innerText = \"Location permission denied.\"\n        );\n      } else {\n        document.getElementById(\"status\").innerText = \"Geolocation not supported.\";\n      }\n    </script>\n  </body>\n</html>\n`;\n\nmsg.headers = { \"Content-Type\": \"text/html\" };\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 420,
+        "wires": [
+            [
+                "http_response"
+            ]
+        ]
+    },
+    {
+        "id": "http_response",
+        "type": "http response",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 690,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "abd9e46c4b099e1f",
+        "type": "http in",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "",
+        "url": "/getWeatherByCoords",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 350,
+        "y": 540,
+        "wires": [
+            [
+                "add269cc7ed41f54"
+            ]
+        ]
+    },
+    {
+        "id": "add269cc7ed41f54",
+        "type": "function",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "Build Weather API URL",
+        "func": "let lat = msg.req.query.lat;\nlet lon = msg.req.query.lon;\nlet apiKey = \"c59897bd1443dbeea7b2d158349becf5\";  \n\nmsg.url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 560,
+        "wires": [
+            [
+                "6d4041a8f35b44f9"
+            ]
+        ]
+    },
+    {
+        "id": "6d4041a8f35b44f9",
+        "type": "http request",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 850,
+        "y": 500,
+        "wires": [
+            [
+                "351d30961f5bd967"
+            ]
+        ]
+    },
+    {
+        "id": "351d30961f5bd967",
+        "type": "http response",
+        "z": "1a1b1c1d1e1f1g1h",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1030,
+        "y": 560,
+        "wires": []
+    }
+]
