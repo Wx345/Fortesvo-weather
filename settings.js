@@ -24,6 +24,9 @@ const path = require("path");
 
 module.exports = {
 
+
+httpStatic: path.join(__dirname, "public"),
+
 /*******************************************************************************
  * Flow File and User Directory Settings
  *  - flowFile
@@ -32,8 +35,6 @@ module.exports = {
  *  - userDir
  *  - nodesDir
  ******************************************************************************/
-    
-    httpStatic: path.join(__dirname, "public"),
 
     /** The file containing the flows. If not set, defaults to flows_<hostname>.json **/
     flowFile: 'flows.json',
@@ -234,9 +235,7 @@ module.exports = {
      * to move httpAdminRoot
      */
    // httpStatic: '/Users/wenxuan/.node-red/public', //single static source
-    const path = require("path");
-
-    httpStatic: path.join(__dirname, "public"),
+    
     /**
      *  OR multiple static sources can be created using an array of objects...
      *  Each object can also contain an options object for further configuration.

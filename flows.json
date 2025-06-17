@@ -15,97 +15,38 @@
         "info": ""
     },
     {
-        "id": "f84fec57215ae9ad",
-        "type": "inject",
-        "z": "6bbe826837336417",
+        "id": "57343bd5e1c6d818",
+        "type": "mqtt-broker",
         "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "300",
-        "crontab": "",
-        "once": true,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 130,
-        "y": 200,
-        "wires": [
-            [
-                "e2c865d8d1053a70"
-            ]
-        ]
+        "broker": "localhost",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
     },
     {
-        "id": "e2c865d8d1053a70",
-        "type": "http request",
-        "z": "6bbe826837336417",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://api.openweathermap.org/data/2.5/weather?q=Kuala%20Lumpur&appid=c59897bd1443dbeea7b2d158349becf5&units=metric",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 290,
-        "y": 200,
-        "wires": [
-            [
-                "95812225809a61f6",
-                "0f6db07e571e1c19"
-            ]
-        ]
-    },
-    {
-        "id": "95812225809a61f6",
-        "type": "json",
-        "z": "6bbe826837336417",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 450,
-        "y": 200,
-        "wires": [
-            [
-                "8a2abb3091b66870"
-            ]
-        ]
-    },
-    {
-        "id": "8a2abb3091b66870",
-        "type": "function",
-        "z": "6bbe826837336417",
-        "name": "function 1",
-        "func": "let data = msg.payload;\n\nlet city = data.name;\nlet temp = data.main.temp;\nlet humidity = data.main.humidity;\nlet weather = data.weather[0].description;\n\nmsg.payload = {\n    city: city,\n    temperature: temp,\n    humidity: humidity,\n    condition: weather\n};\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 600,
-        "y": 200,
-        "wires": [
-            [
-                "94d1b15193fd3b69"
-            ]
-        ]
-    },
-    {
-        "id": "94d1b15193fd3b69",
+        "id": "b054f087e94b46f8",
         "type": "debug",
         "z": "6bbe826837336417",
         "name": "debug 1",
@@ -116,38 +57,28 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 760,
-        "y": 200,
+        "x": 560,
+        "y": 440,
         "wires": []
     },
     {
-        "id": "93ce37b41d4ce8f7",
-        "type": "http response",
+        "id": "97211a568d644012",
+        "type": "mqtt in",
         "z": "6bbe826837336417",
         "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 710,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "0f6db07e571e1c19",
-        "type": "function",
-        "z": "6bbe826837336417",
-        "name": "function 2",
-        "func": "let weather = flow.get(\"weatherData\") || \"No data yet\";\nmsg.payload = `\n  <html>\n    <head><title>Weather</title></head>\n    <body>\n      <h1>Current Weather</h1>\n      <p>${weather}</p>\n    </body>\n  </html>\n`;\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 520,
-        "y": 320,
+        "topic": "Topic",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "57343bd5e1c6d818",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 350,
+        "y": 440,
         "wires": [
             [
-                "93ce37b41d4ce8f7"
+                "b054f087e94b46f8"
             ]
         ]
     },
