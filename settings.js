@@ -20,6 +20,8 @@
  *
  **/
 
+const path = require("path");
+
 module.exports = {
 
 /*******************************************************************************
@@ -30,6 +32,8 @@ module.exports = {
  *  - userDir
  *  - nodesDir
  ******************************************************************************/
+    
+    httpStatic: path.join(__dirname, "public"),
 
     /** The file containing the flows. If not set, defaults to flows_<hostname>.json **/
     flowFile: 'flows.json',
